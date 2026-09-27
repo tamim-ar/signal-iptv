@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal — Free IPTV Channel Browser</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%230D1321%22/><circle cx=%2250%22 cy=%2250%22 r=%2214%22 fill=%22%23E4572E%22/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-name">SIGNAL</span>
+    <span class="brand-sub">live channel browser</span>
+  </div>
+
+  <div class="search-wrap">
+    <input id="searchInput" type="text" placeholder="Search channels, e.g. BBC, Al Jazeera, Discovery…" autocomplete="off">
+    <span class="search-count" id="resultCount">—</span>
+  </div>
+
+  <div class="status" id="loadStatus">
+    <span class="dot" id="statusDot"></span>
+    <span id="statusText">tuning in…</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="filters">
+    <div class="filter-block">
+      <h3>Country</h3>
+      <select id="countryFilter">
+        <option value="">All countries</option>
+      </select>
+    </div>
+
+    <div class="filter-block">
+      <h3>Category</h3>
+      <select id="categoryFilter">
+        <option value="">All categories</option>
+      </select>
+    </div>
+
+    <div class="filter-block">
+      <h3>Only</h3>
+      <label class="toggle">
+        <input type="checkbox" id="onlyPlayable" checked>
+        <span>Channels with a working stream link</span>
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="hideNsfw" checked>
+        <span>Hide adult channels</span>
+      </label>
+    </div>
+
+    <div class="filter-block">
+      <h3>Sort</h3>
+      <select id="sortOrder">
+        <option value="name">Name (A–Z)</option>
+        <option value="country">Country</option>
+      </select>
+    </div>
+
+    <button class="reset-btn" id="resetFilters">Reset filters</button>
+
+    <p class="source-note">Channel data from the <a href="https://github.com/iptv-org/api" target="_blank" rel="noopener">iptv-org</a> public API. Streams are community-sourced links, not hosted here — some may be geo-blocked, offline, or slow.</p>
+  </aside>
+
+  <main class="content">
+    <div id="grid" class="grid"></div>
+    <div id="emptyState" class="empty-state hidden">
+      <p>No channels match that search.</p>
+    </div>
+    <button id="loadMoreBtn" class="load-more hidden">Show more channels</button>
+  </main>
+
+</div>
+
+<!-- Player modal -->
+<div id="playerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="playerTitle">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-panel">
+    <div class="modal-head">
+      <div class="modal-title-wrap">
+        <span class="modal-flag" id="playerFlag"></span>
+        <div>
+          <h2 id="playerTitle">Channel name</h2>
+          <p id="playerMeta">Country · Category</p>
+        </div>
+      </div>
+      <button id="closePlayer" class="close-btn" aria-label="Close player">✕</button>
+    </div>
+
+    <div class="video-wrap">
+      <video id="video" controls playsinline></video>
+      <div id="videoOverlay" class="video-overlay">
+        <p id="videoOverlayText">Loading stream…</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div id="streamPicker" class="stream-picker"></div>
+      <a id="visitSite" href="#" target="_blank" rel="noopener" class="site-link hidden">Official site ↗</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
